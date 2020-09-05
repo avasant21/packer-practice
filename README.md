@@ -1,2 +1,2 @@
 # packer-practice
-Pracker fundamentals to practice
+Packer fundamentals to practice
