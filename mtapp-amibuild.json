@@ -1,0 +1,41 @@
+{
+	"variables": {
+		"aws_access_key": "",
+		"aws_secret_key": "",
+		"region": "ap-south-1",
+		"version": "1.0",
+		"latest_ami": ""
+	},
+	"builders": [{
+		"type": "amazon-ebs",
+		"access_key": "{{user `aws_access_key`}}",
+		"secret_key": "{{user `aws_secret_key`}}",
+		"region": "{{user `region`}}",
+		"source_ami": "{{user `latest_ami`}}",
+		"ami_name": "mtapp-{{user `version`}}-{{timestamp}}",
+		"instance_type": "t2.micro",
+		"ssh_username": "centos",
+		"tags": {
+			"OS_Version": "Centos",
+			"Base_AMI_Name": "{{ .SourceAMIName }}"
+		}
+	}],
+	"provisioners": [{
+			"type": "shell",
+			"inline": [
+				"echo 'Updating the system with latest patch",
+				"sudo yum update -y",
+				"echo 'Creating centos User",
+				"echo 'useradd centos'",
+				"sudo usermod -aG wheel centos",
+				"sed -i 's/^%wheel/# %wheel/' /etc/sudoers",
+				"sudo echo '%wheel  ALL=(ALL)       NOPASSWD: ALL' >> /etc/sudoers",
+				"echo centos:centos | sudo chpasswd"
+			]
+		},
+		{
+			"type": "ansible",
+			"playbook_file": "./mtapp-playbook.yml"
+		}
+	]
+}
