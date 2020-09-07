@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  mt-webapp:
+    image: milindtech/mt-stapp:2.0
+    ports:
+    - "8080:80"
+    restart: unless-stopped
+    environment:
+    - NGINX_PORT=80
