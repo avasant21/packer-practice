@@ -21,7 +21,8 @@
 		"instance_type": "t2.micro",
 		"ssh_username": "centos",
 		"tags": {
-			"version": "mtapp-{{user `version`}}",
+			"name": "mtapp-{{user `version`}}",
+			"version": {{user `version`}}",
 			"base": "{{ .SourceAMIName }}"
 		}
 	}],
